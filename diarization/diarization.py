@@ -146,19 +146,10 @@ def main(url, output_folder):
         logging.info("Download completed. Starting diarization process.")
         diarization = Diarization(wav_audio_file)
         diarization_result = diarization.diarize()
-        protocol_file = os.path.join(downloader.base_dir, "protocol.txt")
         protocol_json_file = os.path.join(downloader.base_dir, "protocol.json")
 
         if not os.path.exists(protocol_json_file):
             protocol = diarization.create_protocol(diarization_result)
-
-            with open(protocol_file, "w") as file:
-                for entry in protocol:
-                    file.write(
-                        f"{entry['speaker']} from {entry['start']:.2f} to "
-                        f"{entry['end']:.2f}: {entry['text']}\n"
-                    )
-
             # Save the protocol as JSON
             with open(protocol_json_file, "w") as json_file:
                 json.dump(protocol, json_file, indent=4)

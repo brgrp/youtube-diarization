@@ -5,7 +5,10 @@ from pytubefix import YouTube
 from pytubefix.cli import on_progress
 
 # Configure logging
-logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(
+    level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
+)
+
 
 class YouTubeDownloader:
     """
@@ -21,7 +24,9 @@ class YouTubeDownloader:
         self.yt = YouTube(url, on_progress_callback=on_progress)
         self.video_title = self._sanitize_title(self.yt.title)
         self.date_str = datetime.now().strftime("%Y%m%d")
-        self.base_dir = os.path.join(self.output_folder, f"{self.date_str}_{self.video_title}")
+        self.base_dir = os.path.join(
+            self.output_folder, f"{self.date_str}_{self.video_title}"
+        )
         os.makedirs(self.base_dir, exist_ok=True)
         self.save_link()
         logging.info(f"Initialized YouTubeDownloader with URL: {url}")
@@ -52,10 +57,14 @@ class YouTubeDownloader:
             ys = yt.streams.get_audio_only()
 
             audio_path = os.path.join(self.base_dir, f"{self.video_title}_audio.m4a")
-            wav_audio_path = os.path.join(self.base_dir, f"{self.video_title}_audio.wav")
+            wav_audio_path = os.path.join(
+                self.base_dir, f"{self.video_title}_audio.wav"
+            )
 
             if not os.path.exists(audio_path):
-                ys.download(output_path=self.base_dir, filename=f"{self.video_title}_audio.m4a")
+                ys.download(
+                    output_path=self.base_dir, filename=f"{self.video_title}_audio.m4a"
+                )
                 logging.info("Audio downloaded successfully.")
             else:
                 logging.warning("Audio file already exists.")
@@ -79,13 +88,16 @@ class YouTubeDownloader:
         except Exception as e:
             logging.error(f"Failed to convert audio to WAV format: {e}")
 
+
 # Example usage
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser(description="YouTube Downloader")
     parser.add_argument("url", type=str, help="The YouTube URL to download")
-    parser.add_argument("output_folder", type=str, help="The folder to save the output files")
+    parser.add_argument(
+        "output_folder", type=str, help="The folder to save the output files"
+    )
     args = parser.parse_args()
 
     downloader = YouTubeDownloader(args.url, args.output_folder)

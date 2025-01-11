@@ -10,6 +10,7 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
+
 class Transcriber:
     """
     A class to handle transcription of audio files using Whisper.
@@ -43,6 +44,7 @@ class Transcriber:
             text_file.write(transcription_text)
             logging.info(f"Transcription saved to {output_file}")
 
+
 def main(url, output_folder):
     """
     Main function to handle downloading and transcribing YouTube audio.
@@ -69,10 +71,13 @@ def main(url, output_folder):
     else:
         logging.error("Failed to download the audio file.")
 
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="YouTube Downloader and Transcriber")
     parser.add_argument("url", type=str, help="The YouTube URL to download")
-    parser.add_argument("output_folder", type=str, help="The folder to save the output files")
+    parser.add_argument(
+        "output_folder", type=str, help="The folder to save the output files"
+    )
     args = parser.parse_args()
 
     main(args.url, args.output_folder)

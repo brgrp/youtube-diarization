@@ -15,7 +15,7 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-HUGGING_FACE_TOKEN = ""
+HUGGING_FACE_TOKEN = "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"
 
 class Diarization:
     def __init__(self, audio_file):
@@ -155,7 +155,7 @@ def main(url, output_folder):
             with open(protocol_file, "w") as file:
                 for entry in protocol:
                     file.write(
-                        f"Speaker {entry['speaker']} from {entry['start']:.2f} to "
+                        f"{entry['speaker']} from {entry['start']:.2f} to "
                         f"{entry['end']:.2f}: {entry['text']}\n"
                     )
 

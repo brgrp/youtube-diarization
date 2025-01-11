@@ -21,7 +21,7 @@ class Transcriber:
         Initializes the Transcriber with a specified model.
         """
         self.device = torch.device(
-            "mps" if torch.backends.mps.is_available() else "cpu"
+            "cuda" if torch.cuda.is_available() else "mps" if torch.backends.mps.is_available() else "cpu"
         )
         logging.info(f"Using device: {self.device}")
         self.model = whisper.load_model(modelname)

@@ -5,10 +5,14 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
+    "celery[redis]>=5.4.0",
+    "flower>=2.0.1",
     "openai-whisper",
     "pyannote-audio>=3.3.2",
     "pydub>=0.25.1",
     "pytubefix>=8.10.0",
+    "redis>=5.2.1",
+    "streamlit>=1.41.1",
     "torch>=2.5.1",
 ]
 

@@ -10,12 +10,51 @@ This project provides tools for downloading YouTube videos, performing speaker d
 - Save detailed protocols of speaker segments and their transcriptions
 
 ## Requirements
+The uv package is needed. For installation see [GitHub](https://github.com/astral-sh/uv)
 
 To install the required dependencies, run:
 
 ```sh
-pip install -r requirements.txt
+uv sync
 ```
+
+### Setting Up Redis
+
+To use Celery, you need to have Redis installed and running. You can install Redis using Homebrew:
+
+```sh
+brew install redis
+```
+
+Start the Redis server:
+
+```sh
+brew services start redis
+```
+
+### Setting Up Flower
+
+To monitor Celery tasks, you can use Flower. Install Flower using pip:
+
+```sh
+pip install flower
+```
+
+### Running Flower and Celery Workers
+
+To monitor Celery tasks and run Celery workers, follow these steps:
+
+1. **Start the Flower server**:
+    ```sh
+    uv run celery -A diarization.celery_task flower --port=5555
+    ```
+
+    Access the Flower dashboard by navigating to `http://localhost:5555` in your web browser.
+
+2. **Start the Celery worker**:
+    ```sh
+    uv run celery -A diarization.celery_task worker --loglevel=info -P threads
+    ```
 
 ## Usage
 
@@ -24,7 +63,7 @@ pip install -r requirements.txt
 To download and process a single YouTube video, run:
 
 ```sh
-python diarization.py <YouTube_URL> <output_folder>
+uv run diarization.py <YouTube_URL> <output_folder>
 ```
 
 ### Batch Processing from a File
@@ -32,7 +71,24 @@ python diarization.py <YouTube_URL> <output_folder>
 To process multiple YouTube URLs from a file, run:
 
 ```sh
-python diarization.py --file <file_with_urls> <output_folder>
+uv run diarization.py --file <file_with_urls> <output_folder>
+```
+
+### Running Celery Tasks
+
+To run Celery tasks for downloading and transcribing, start the Celery worker:
+
+```sh
+uv run celery -A diarization.celery_task worker --loglevel=info -P threads
+```
+
+Then, you can call the task from your code:
+
+```python
+from diarization.celery_task import download_and_transcribe
+
+result = download_and_transcribe.delay(<YouTube_URL>, <output_folder>)
+print(result.get())
 ```
 
 ## Output
@@ -45,7 +101,7 @@ The output will include:
 ## Example
 
 ```sh
-python diarization.py https://www.youtube.com/watch?v=example <output_folder>
+uv run diarization.py https://www.youtube.com/watch?v=example <output_folder>
 ```
 
 ## Applications

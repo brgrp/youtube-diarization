@@ -1,7 +1,7 @@
 import os
 import logging
 import argparse
-from youtube_downloader import YouTubeDownloader
+from src.youtube_downloader import YouTubeDownloader
 import torch
 import whisper
 

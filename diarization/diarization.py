@@ -1,7 +1,7 @@
 import os
 import logging
-from youtube_downloader import YouTubeDownloader
-from transcription import Transcriber
+from src.youtube_downloader import YouTubeDownloader
+from src.transcription import Transcriber
 import torch
 from pyannote.core import Segment
 from pyannote.audio import Pipeline

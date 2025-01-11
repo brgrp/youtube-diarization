@@ -1,0 +1,16 @@
+[project]
+name = "diarization"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "openai-whisper",
+    "pyannote-audio>=3.3.2",
+    "pydub>=0.25.1",
+    "pytubefix>=8.10.0",
+    "torch>=2.5.1",
+]
+
+[tool.uv.sources]
+openai-whisper = { git = "https://github.com/openai/whisper.git", rev = "90db0de1896c23cbfaf0c58bc2d30665f709f170" }

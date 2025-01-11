@@ -155,7 +155,8 @@ def main(url, output_folder):
             with open(protocol_file, "w") as file:
                 for entry in protocol:
                     file.write(
-                        f"Speaker {entry['speaker']} from {entry['start']:.2f} to {entry['end']:.2f}: {entry['text']}\n"
+                        f"Speaker {entry['speaker']} from {entry['start']:.2f} to "
+                        f"{entry['end']:.2f}: {entry['text']}\n"
                     )
 
             # Save the protocol as JSON
@@ -170,10 +171,34 @@ def main(url, output_folder):
 if __name__ == "__main__":
     import argparse
 
-    parser = argparse.ArgumentParser(description="YouTube Downloader, Diarization, and Transcription")
-    parser.add_argument("url", type=str, help="The YouTube URL to download")
-    parser.add_argument("output_folder", type=str, help="The folder to save the output files")
+    parser = argparse.ArgumentParser(
+        description="YouTube Downloader, Diarization, and Transcription"
+    )
+    parser.add_argument(
+        "url", type=str, nargs='?', help="The YouTube URL to download"
+    )
+    parser.add_argument(
+        "output_folder", type=str, help="The folder to save the output files"
+    )
+    parser.add_argument(
+        "--file", type=str, help="A text file containing multiple YouTube URLs"
+    )
     args = parser.parse_args()
 
-    main(args.url, args.output_folder)
+    if args.file:
+        logging.info(f"Processing URLs from file: {args.file}")
+        with open(args.file, 'r') as file:
+            urls = file.readlines()
+        for url in urls:
+            url = url.strip()
+            if url:
+                logging.info(f"Processing URL: {url} output_folder: {args.output_folder}")
+                main(url, args.output_folder)
+    elif args.url:
+        logging.info(f"Processing single URL: {args.url}")
+        main(args.url, args.output_folder)
+    else:
+        logging.error(
+            "You must provide either a YouTube URL or a file containing URLs."
+        )
     

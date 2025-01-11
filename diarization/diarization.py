@@ -15,7 +15,9 @@ logging.basicConfig(
     level=logging.INFO, format="%(asctime)s - %(levelname)s - %(message)s"
 )
 
-HUGGING_FACE_TOKEN = "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"
+HUGGING_FACE_TOKEN = os.getenv("HUGGING_FACE_TOKEN")
+if not HUGGING_FACE_TOKEN:
+    raise ValueError("HUGGING_FACE_TOKEN environment variable not set")
 
 class Diarization:
     def __init__(self, audio_file):

@@ -34,7 +34,7 @@ def load_previous_tasks():
 st.title("YouTube Video Diarization")
 
 url = st.text_input("YouTube URL")
-output_folder = st.text_input("Output Folder")
+output_folder = st.text_input("Output Folder", value="output")
 
 if st.button("Start Task"):
     if url and output_folder:

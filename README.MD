@@ -1,4 +1,4 @@
-# YouTube Video Diarization
+# YouTube Diarization
 
 This project provides tools for downloading YouTube videos, performing speaker diarization, and transcribing the audio. It leverages state-of-the-art models for accurate speaker identification and transcription.
 
@@ -9,8 +9,21 @@ This project provides tools for downloading YouTube videos, performing speaker d
 - Transcribe the audio to text
 - Save detailed protocols of speaker segments and their transcriptions
 
+## Tools and Models Used
+
+### Transcription
+
+For transcription, we use the Whisper turbo model from OpenAI. Whisper is a general-purpose speech recognition model that is trained on a large dataset of diverse audio.
+
+### Downloading Audio
+
+For downloading audio from YouTube, we use the `pytubefix` library.
+
+### Diarization
+
+For speaker diarization, we use the `pyannote.audio` library. `pyannote.audio` is a toolkit for speaker diarization that provides pre-trained models for speaker identification and segmentation.
+
 ## Requirements
-The uv package is needed. For installation see [GitHub](https://github.com/astral-sh/uv)
 
 To install the required dependencies, run:
 
@@ -18,7 +31,15 @@ To install the required dependencies, run:
 uv sync
 ```
 
-### Setting Up Redis
+### Setting Up Environment Variables
+
+You need to set the `HUGGING_FACE_TOKEN` environment variable. You can do this by adding the following line to your shell configuration file (e.g., `.bashrc`, `.zshrc`):
+
+```sh
+export HUGGING_FACE_TOKEN=<your_hugging_face_token>
+```
+
+### Setting Up Redis (Optional)
 
 To use Celery, you need to have Redis installed and running. You can install Redis using Homebrew:
 
@@ -32,15 +53,15 @@ Start the Redis server:
 brew services start redis
 ```
 
-### Setting Up Flower
+### Setting Up Flower (Optional)
 
 To monitor Celery tasks, you can use Flower. Install Flower using pip:
 
 ```sh
-pip install flower
+uv add flower
 ```
 
-### Running Flower and Celery Workers
+### Running Flower and Celery Workers (Optional)
 
 To monitor Celery tasks and run Celery workers, follow these steps:
 
@@ -56,6 +77,14 @@ To monitor Celery tasks and run Celery workers, follow these steps:
     uv run celery -A diarization.celery_task worker --loglevel=info -P threads
     ```
 
+### Installing ffmpeg
+
+To convert the audio to WAV format, you need to have `ffmpeg` installed. You can install `ffmpeg` using Homebrew:
+
+```sh
+brew install ffmpeg
+```
+
 ## Usage
 
 ### Download and Diarize a Single YouTube Video
@@ -68,13 +97,13 @@ uv run diarization.py <YouTube_URL> <output_folder>
 
 ### Batch Processing from a File
 
-To process multiple YouTube URLs from a file, run:
+To process multiple YouTube URLs from a simple text file (one link per line), run:
 
 ```sh
 uv run diarization.py --file <file_with_urls> <output_folder>
 ```
 
-### Running Celery Tasks
+### Running Celery Tasks (Optional)
 
 To run Celery tasks for downloading and transcribing, start the Celery worker:
 
@@ -89,6 +118,14 @@ from diarization.celery_task import download_and_transcribe
 
 result = download_and_transcribe.delay(<YouTube_URL>, <output_folder>)
 print(result.get())
+```
+
+### Running the Streamlit App with Celery Tasks
+
+To run the Streamlit app for a user-friendly interface, use the following command:
+
+```sh
+uv run streamlit run streamlit_app.py
 ```
 
 ## Output

@@ -1,5 +1,7 @@
 import streamlit as st
 import requests
+import json
+import os
 from celery_task import download_diarize_transcribe
 
 
@@ -17,6 +19,16 @@ def check_task_status(task_id):
         return task_info.get("state"), task_info.get("result")
     else:
         return "UNKNOWN", None
+
+# Function to load previous task results
+def load_previous_tasks():
+    # This function should load the previous task results from a persistent storage
+    # For demonstration purposes, we will use a static list
+    previous_tasks = [
+        {'status': 'success', 'protocol_file': 'test1/20250111_How_To_Build_The_Future__Parker_Conrad/protocol.json'},
+        # Add more task results here
+    ]
+    return previous_tasks
 
 # Streamlit UI
 st.title("YouTube Video Diarization")
@@ -52,3 +64,19 @@ if st.button("Check Status"):
             st.write("Task status is unknown.")
     else:
         st.error("Please provide a task ID.")
+
+# Load previous task results
+previous_tasks = load_previous_tasks()
+task_options = [f"{task['protocol_file']} ({task['status']})" for task in previous_tasks]
+
+selected_task = st.selectbox("Select a previous task to view the protocol", task_options)
+
+if selected_task:
+    selected_protocol_file = "diarization/"+next(task['protocol_file'] for task in previous_tasks if f"{task['protocol_file']} ({task['status']})" == selected_task)
+    st.write(f"Displaying protocol: {selected_protocol_file}")
+    if os.path.exists(selected_protocol_file):
+        with open(selected_protocol_file, 'r') as file:
+            protocol_content = json.load(file)
+            st.json(protocol_content)
+    else:
+        st.error(f"Protocol file not found: {selected_protocol_file}")

@@ -18,3 +18,8 @@ dependencies = [
 
 [tool.uv.sources]
 openai-whisper = { git = "https://github.com/openai/whisper.git", rev = "90db0de1896c23cbfaf0c58bc2d30665f709f170" }
+
+[dependency-groups]
+dev = [
+    "ruff>=0.9.1",
+]

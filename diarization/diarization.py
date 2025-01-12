@@ -80,7 +80,7 @@ class Diarization:
                 }
             )
 
-        logging.info(f"Protocol creation completed.")
+        logging.info("Protocol creation completed.")
         logging.info(f"Protocol: {protocol}")
         return protocol
 
@@ -119,7 +119,7 @@ class Diarization:
         # Transcribe the segment
         try:
             transcription_text = self.transcriber.transcribe(audio_filename)
-            logging.info(f"Transcription for segment completed.")
+            logging.info("Transcription for segment completed.")
 
             # Save the transcription
             transcript_filename = os.path.join(

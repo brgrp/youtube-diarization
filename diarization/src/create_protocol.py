@@ -70,8 +70,6 @@ def main(input_file):
 
     save_protocol_as_text(protocol, output_text)
 
-    print(f"Filtered protocol saved to {output_json} and {output_text}")
-
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Process and filter a protocol.")
     parser.add_argument("input_file", type=str, help="Path to the input protocol file")
